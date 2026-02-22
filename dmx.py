@@ -50,7 +50,8 @@ def turn_off(controller_ip=None, universe=0, port=6454, verbose=False):
         sock.close()
 
 
-def fade_to_color(clr, controller_ip=None, port=6454, num_pixels=512//3, fade_steps=200, delay=5, universe=0, verbose=False):
+def fade_to_color(clr, controller_ip=None, port=6454, num_pixels=512//3, mode="asc",
+                  fade_steps=200, delay=5, universe=0, verbose=False):
     """
     Gradually changes color to the specified RGB values for all pixels.
     clr must be (r, g, b) tuple: target color values (0-255 each).
@@ -66,7 +67,7 @@ def fade_to_color(clr, controller_ip=None, port=6454, num_pixels=512//3, fade_st
 
     red, green, blue = clr
     try:
-        for step in range(fade_steps + 1):
+        for step in range(fade_steps, -1, -1) if mode == "desc" else range(fade_steps + 1):
             r_current = int(red * step / fade_steps)
             g_current = int(green * step / fade_steps)
             b_current = int(blue * step / fade_steps)
